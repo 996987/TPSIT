@@ -1,4 +1,4 @@
-package EsercizioRipasso1;
+package src.EsercizioRipasso1;
 
 
 import java.util.Random;

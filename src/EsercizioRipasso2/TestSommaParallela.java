@@ -1,4 +1,4 @@
-package EsercizioRipasso2;
+package src.EsercizioRipasso2;
 
 public class TestSommaParallela {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package EsercizioRipasso1;
+package src.EsercizioRipasso1;
 
 public class TestContoBancario {
     public static void main(String[] args) {

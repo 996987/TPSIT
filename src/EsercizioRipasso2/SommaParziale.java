@@ -1,4 +1,4 @@
-package EsercizioRipasso2;
+package src.EsercizioRipasso2;
 
 public class SommaParziale implements Runnable {
     private final Numero numero;
