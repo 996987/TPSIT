@@ -8,6 +8,8 @@ public class Festival {
     private final SemaphoreWithQueue[] tornelli;
     private final SemaphoreWithQueue[] bodyguard;
 
+    private final Semaphore cancello;
+
     public Festival(int Ntornelli) {
         if (Ntornelli < 2) {
             throw new IllegalArgumentException("Il numero di tornelli deve essere almeno 2");
@@ -21,6 +23,7 @@ public class Festival {
             this.tornelli[i] = new SemaphoreWithQueue(1);
             this.bodyguard[i] = new SemaphoreWithQueue(1);
         }
+        this.cancello = new Semaphore(100);
     }
 
 
@@ -97,6 +100,13 @@ public class Festival {
             bodyguard[nBodyguard].release();  // Cambia questo: utilizza i semafori dei bodyguard
             System.out.println("Spettatore con biglietto " + idBiglietto + " è stato perquisito dalla guardia " + nBodyguard);
         }
+    }
+
+    public void deflusso(int idBiglietto) throws InterruptedException {
+        cancello.acquire();
+        Thread.sleep(5000);
+        cancello.release();
+        System.out.println("Spettatore con biglietto " + idBiglietto + " è uscito dallo stadio");
     }
 
 }
