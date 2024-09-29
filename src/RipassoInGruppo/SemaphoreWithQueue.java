@@ -2,9 +2,12 @@ package src.RipassoInGruppo;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
+//questa classe serve per gestire un semaforo con un numero di thread in attesa
 public class SemaphoreWithQueue extends Semaphore {
     private final AtomicInteger waitingThreads;
 
+
+    //metodo costruttore che setta il numerto di thread in attesa
     public SemaphoreWithQueue(int permits) {
         super(permits);
         this.waitingThreads = new AtomicInteger(0);

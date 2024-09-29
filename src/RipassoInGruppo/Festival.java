@@ -5,29 +5,32 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Festival {
-    private final SemaphoreWithQueue[] tornelli;
-    private final SemaphoreWithQueue[] bodyguard;
+    private final SemaphoreWithQueue[] tornelli; //array di semafori con coda per  i tornelli
+    private final SemaphoreWithQueue[] bodyguard; //array di semafori con coda per i bodygurd
 
-    private final Semaphore cancello;
+    private final Semaphore cancello; //semaforo per gestire l'uscita dal cancello
 
+    // Costruttore che inizializza il numero di tornelli
     public Festival(int Ntornelli) {
+        //verifichiamo che il numero di tornelli sia almeno due, in caso contrario lanciamo un eccezione
         if (Ntornelli < 2) {
             throw new IllegalArgumentException("Il numero di tornelli deve essere almeno 2");
         }
 
-        // Initialize the arrays with the specified number of turnstiles
+        // Inizializza gli array con il numero di tornelli specificato
         this.tornelli = new SemaphoreWithQueue[Ntornelli];
         this.bodyguard = new SemaphoreWithQueue[Ntornelli];
 
+        // Crea un semaforo per ogni tornello e guardia del corpo
         for (int i = 0; i < Ntornelli; i++) {
             this.tornelli[i] = new SemaphoreWithQueue(1);
             this.bodyguard[i] = new SemaphoreWithQueue(1);
         }
-        this.cancello = new Semaphore(100);
+        this.cancello = new Semaphore(100);//il cancello d'uscita permette l'uscita di 100 persone contemporaneamente
     }
 
 
-
+    //questo metodo simula l'entrata di uno spettatore
     public void entra(int idBiglietto){
         // Trova il tornello con il minor numero di thread in attesa
         int minWaitingThreads = tornelli[0].getWaitingThreads();
@@ -35,13 +38,12 @@ public class Festival {
         bestTornelli.add(0); // Aggiungi il primo tornello alla lista dei migliori
 
         for (int i = 1; i < tornelli.length; i++) {
-            int waitingThreads = tornelli[i].getWaitingThreads();
+            int waitingThreads = tornelli[i].getWaitingThreads();// acquisisce il numero di thread in attesa al tornello
             if(tornelli[i].availablePermits()==0){
                 waitingThreads = tornelli[i].getWaitingThreads() + 1;
             }
-              // Numero di thread in attesa sul tornello i
+            // Se il tornello corrente ha meno thread in attesa, aggiornalo come migliore
             if (waitingThreads < minWaitingThreads) {
-                // Se trovi un tornello con meno thread, svuota la lista e aggiungi questo
                 bestTornelli.clear();
                 bestTornelli.add(i);
                 minWaitingThreads = waitingThreads;
@@ -86,7 +88,7 @@ public class Festival {
 
 
 
-
+    // Metodo per simulare la perquisizione da parte della guardia
     public void perquisizione(int idBiglietto, int nBodyguard) {
         try {
             System.out.println("Spettatore con biglietto " + idBiglietto + " è in attesa della perquisizione da parte della guardia " + nBodyguard);
@@ -109,18 +111,20 @@ public class Festival {
         }
     }
 
+
+    // Metodo per simulare l'uscita dallo stadio
     public void deflusso(int idBiglietto) {
         try {
-            cancello.acquire();
+            cancello.acquire();// Acquisisce il semaforo del cancello
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         try {
-            Thread.sleep(5000);
+            Thread.sleep(5000);// Simula il tempo necessario per uscire
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        cancello.release();
+        cancello.release(); // Rilascia il semaforo del cancello
         System.out.println("Spettatore con biglietto " + idBiglietto + " è uscito dallo stadio");
     }
 
