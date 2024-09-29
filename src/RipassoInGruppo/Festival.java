@@ -32,7 +32,11 @@ public class Festival {
         bestTornelli.add(0); // Aggiungi il primo tornello alla lista dei migliori
 
         for (int i = 1; i < tornelli.length; i++) {
-            int waitingThreads = tornelli[i].getWaitingThreads();  // Numero di thread in attesa sul tornello i
+            int waitingThreads = tornelli[i].getWaitingThreads();
+            if(tornelli[i].availablePermits()==0){
+                waitingThreads = tornelli[i].getWaitingThreads() + 1;
+            }
+              // Numero di thread in attesa sul tornello i
             if (waitingThreads < minWaitingThreads) {
                 // Se trovi un tornello con meno thread, svuota la lista e aggiungi questo
                 bestTornelli.clear();
@@ -63,10 +67,11 @@ public class Festival {
             // Rilascia il semaforo dopo il passaggio
             tornelli[nBestTornello].release();
             System.out.println("Spettatore con biglietto " + idBiglietto + " è passato attraverso il tornello " + nBestTornello);
+            // Passa alla fase di perquisizione
+            perquisizione(idBiglietto, nBestTornello);
         }
 
-        // Passa alla fase di perquisizione
-        perquisizione(idBiglietto, nBestTornello);
+
     }
 
 
