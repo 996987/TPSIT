@@ -28,7 +28,7 @@ public class Festival {
 
 
 
-    public void entra(int idBiglietto) {
+    public void entra(int idBiglietto){
         // Trova il tornello con il minor numero di thread in attesa
         int minWaitingThreads = tornelli[0].getWaitingThreads();
         List<Integer> bestTornelli = new ArrayList<>();
@@ -74,6 +74,13 @@ public class Festival {
             perquisizione(idBiglietto, nBestTornello);
         }
 
+        try {
+            Thread.sleep(2000); //Durata concerto, da definire. Oppure sotto chiamata di Spettatore
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        deflusso(idBiglietto);
+
 
     }
 
@@ -102,9 +109,17 @@ public class Festival {
         }
     }
 
-    public void deflusso(int idBiglietto) throws InterruptedException {
-        cancello.acquire();
-        Thread.sleep(5000);
+    public void deflusso(int idBiglietto) {
+        try {
+            cancello.acquire();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         cancello.release();
         System.out.println("Spettatore con biglietto " + idBiglietto + " è uscito dallo stadio");
     }
