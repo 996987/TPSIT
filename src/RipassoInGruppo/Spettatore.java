@@ -1,24 +1,21 @@
 package src.RipassoInGruppo;
 
 public class Spettatore implements Runnable{
-    private String idBiglietto;
+    private int idBiglietto;
     private Festival concert;
 
-    public Spettatore(String idBiglietto) {
+    public Spettatore(int idBiglietto, Festival concert) {
         this.idBiglietto = idBiglietto;
+        this.concert = concert;
     }
 
-    public String getIdBiglietto() {
+    public int getIdBiglietto() {
         return idBiglietto;
     }
 
-
-
     @Override
     public String toString() {
-        return "Spettatore{" +
-                "idBiglietto='" + idBiglietto + '\'' +
-                '}';
+        return STR."Spettatore{idBiglietto='\{idBiglietto}\{'\''}\{'}'}";
     }
 
     @Override
