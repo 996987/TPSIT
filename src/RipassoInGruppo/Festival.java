@@ -10,7 +10,7 @@ public class Festival {
 
     public Festival(int Ntornelli) {
         if (Ntornelli < 2) {
-            throw new IllegalArgumentException("Number of turnstiles must be at least 2.");
+            throw new IllegalArgumentException("Il numero di tornelli deve essere almeno 2");
         }
 
         // Initialize the arrays with the specified number of turnstiles
