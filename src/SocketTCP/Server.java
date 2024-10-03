@@ -1,27 +1,52 @@
 package src.SocketTCP;
 
-import java.net.*;
-import java.io.*;
+import java.net.*;  // Importa le classi per la gestione delle reti
+import java.io.*;   // Importa le classi per la gestione dell'input/output
 
 public class Server {
-    public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(4999);
-        Socket clientSocket = serverSocket.accept();
-        System.out.println("client connected");
+    public static void main(String[] args) {
+        ServerSocket serverSocket = null;
+        Socket clientSocket = null;
 
-        InputStreamReader in = new InputStreamReader(
-                clientSocket.getInputStream());
-        BufferedReader bf = new BufferedReader(in);
+        try {
+            // Crea un oggetto ServerSocket che ascolta le connessioni sulla porta 4999
+            serverSocket = new ServerSocket(4999);
+            System.out.println("Server in ascolto sulla porta 4999...");
 
-        String str = bf.readLine();
-        System.out.println("client : " + str);
+            // Accetta una connessione in ingresso da un client
+            clientSocket = serverSocket.accept();
+            System.out.println("Client connesso");
 
-        PrintWriter pr = new PrintWriter(
-                clientSocket.getOutputStream());
-        pr.println("Ciao client, messaggio ricevuto!");
-        pr.flush();
+            // Ottiene il flusso di input dal client (dati che il client invia)
+            InputStreamReader in = new InputStreamReader(clientSocket.getInputStream());
+            BufferedReader bf = new BufferedReader(in);
 
-        clientSocket.close();
-        serverSocket.close();
+            // Legge una linea di testo inviata dal client e la memorizza nella stringa 'str'
+            String str = bf.readLine();
+            System.out.println("Messaggio dal client: " + str);
+
+            // Ottiene il flusso di output verso il client (per inviare dati al client)
+            PrintWriter pr = new PrintWriter(clientSocket.getOutputStream());
+            pr.println("Ciao client, messaggio ricevuto!");
+            pr.flush();
+
+        } catch (BindException e) {
+            System.err.println("Errore di bind: la porta 4999 è già in uso.");
+        } catch (SocketException e) {
+            System.err.println("Errore di socket: " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("Errore di I/O: " + e.getMessage());
+        } finally {
+            try {
+                if (clientSocket != null) {
+                    clientSocket.close();
+                }
+                if (serverSocket != null) {
+                    serverSocket.close();
+                }
+            } catch (IOException e) {
+                System.err.println("Errore durante la chiusura delle connessioni: " + e.getMessage());
+            }
+        }
     }
 }
