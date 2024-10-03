@@ -9,23 +9,23 @@ public class Server {
         Socket clientSocket = null;
 
         try {
-            // Crea un oggetto ServerSocket che ascolta le connessioni sulla porta 4999
+            //Crea un oggetto ServerSocket che ascolta le connessioni sulla porta 4999
             serverSocket = new ServerSocket(4999);
             System.out.println("Server in ascolto sulla porta 4999...");
 
-            // Accetta una connessione in ingresso da un client
+
             clientSocket = serverSocket.accept();
             System.out.println("Client connesso");
 
-            // Ottiene il flusso di input dal client (dati che il client invia)
+            //Ottiene il flusso di input dal client
             InputStreamReader in = new InputStreamReader(clientSocket.getInputStream());
             BufferedReader bf = new BufferedReader(in);
 
-            // Legge una linea di testo inviata dal client e la memorizza nella stringa 'str'
+            //Legge una linea di testo inviata dal client
             String str = bf.readLine();
             System.out.println("Messaggio dal client: " + str);
 
-            // Ottiene il flusso di output verso il client (per inviare dati al client)
+            //otiene il flusso di output verso il client (per inviare dati al client)
             PrintWriter pr = new PrintWriter(clientSocket.getOutputStream());
             pr.println("Ciao client, messaggio ricevuto!");
             pr.flush();

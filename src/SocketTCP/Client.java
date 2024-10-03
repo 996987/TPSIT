@@ -1,29 +1,28 @@
 package src.SocketTCP;
 
-import java.io.*;  // Importa le classi per la gestione dell'input/output
-import java.net.*; // Importa le classi per la gestione delle reti
+import java.io.*;
+import java.net.*;
 
 public class Client {
     public static void main(String[] args) {
         Socket socket = null;
 
         try {
-            // Connessione al server
+            //Connessione al server
             socket = new Socket("localhost", 4999);
 
-            // Imposta un timeout di 5 secondi (5000 millisecondi) per le operazioni di lettura dal socket
+            //Imposta un timeout di 5 secondi (5000 millisecondi) per le operazioni di lettura dal socket
             socket.setSoTimeout(5000);
 
-            // Invia un messaggio al server
+            //Invia un messaggio al server
             PrintWriter pr = new PrintWriter(socket.getOutputStream());
             pr.println("Ciao server!");
             pr.flush();
 
-            // Lettura della risposta dal server
+            //Lettura della risposta dal server
             InputStreamReader in = new InputStreamReader(socket.getInputStream());
             BufferedReader bf = new BufferedReader(in);
 
-            // Legge la risposta con timeout
             String str = bf.readLine();
             System.out.println("Messaggio dal server: " + str);
 
@@ -42,7 +41,7 @@ public class Client {
         } finally {
             try {
                 if (socket != null) {
-                    socket.close();  // Chiude il socket per liberare le risorse
+                    socket.close();
                 }
             } catch (IOException e) {
                 System.err.println("Errore durante la chiusura del socket: " + e.getMessage());
