@@ -32,6 +32,7 @@ public class Festival {
 
     //questo metodo simula l'entrata di uno spettatore
     public void entra(int idBiglietto){
+        tornelli[0].tryAcquire();
         // Trova il tornello con il minor numero di thread in attesa
         int minWaitingThreads = tornelli[0].getWaitingThreads();
         List<Integer> bestTornelli = new ArrayList<>();
